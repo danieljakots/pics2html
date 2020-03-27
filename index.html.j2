@@ -14,7 +14,9 @@
 
 {% for picture in pictures %}
         <h2>{{ picture.title }}</h2>
+        <a href="{{ picture.path }}">
         <img src="{{ picture.small_path }}" alt="{{ picture.title }}">
+        </a>
         <p>Taken on {{ picture.date }} with {{ picture.model }}</p>
 
 {% endfor %}
