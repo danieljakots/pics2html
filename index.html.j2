@@ -15,7 +15,7 @@
     </header>
 
 {% for picture in pictures %}
-        <h2>{{ picture.title }}</h2>
+        <h2 id={{ picture.title }}><a href="#{{ picture.title }}" class="hideme">{{ picture.title }}</a></h2>
         <a href="{{ picture.path }}">
         <img src="{{ picture.small_path }}" alt="{{ picture.title }}">
         </a>
