@@ -8,8 +8,8 @@ import PIL.ExifTags
 import jinja2
 
 
-def get_exif(picture):
-    img = PIL.Image.open(picture)
+def get_exif(picture_path):
+    img = PIL.Image.open(picture_path)
     exif = {
         PIL.ExifTags.TAGS[k]: v
         for k, v in img._getexif().items()
@@ -48,8 +48,8 @@ def clean_aperture(FL):
     return f"f/{FL}"
 
 
-def analyze_picture(picture):
-    exif = get_exif(picture)
+def analyze_picture(picture_path):
+    exif = get_exif(picture_path)
     exposure_time = clean_exposure_time(exif["ExposureTime"])
     aperture = clean_aperture(exif['FNumber'])
     cleaned_exif = {}
@@ -60,16 +60,16 @@ def analyze_picture(picture):
     cleaned_exif["aperture"] = aperture
     cleaned_exif["exposure_time"] = exposure_time
     cleaned_exif["iso"] = f"ISO {exif['ISOSpeedRatings']}"
-    cleaned_exif["title"] = picture.rpartition("/")[2][11:].partition(".")[0]
+    cleaned_exif["title"] = picture_path.rpartition("/")[2][11:].partition(".")[0]
     return cleaned_exif
 
 
 def main():
     pictures = []
-    for picture in glob.glob("pictures/*"):
-        ce = analyze_picture(picture)
+    for picture_path in glob.glob("pictures/*"):
+        ce = analyze_picture(picture_path)
         picture_dict = {}
-        picture_dict[picture.rpartition("/")[2]] = ce
+        picture_dict[picture_path.rpartition("/")[2]] = ce
         pictures.append(picture_dict)
 
     with open("index.html.j2", "r") as f:
