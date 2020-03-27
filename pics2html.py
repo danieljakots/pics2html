@@ -101,6 +101,10 @@ def main():
         if not os.path.isfile(small_picture_path(picture_path)):
             reduce_image(picture_path, small_picture_path(picture_path))
 
+    pictures.sort(
+        reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
+    )
+
     with open("index.html.j2", "r") as f:
         template = f.read()
     jinja2_template = jinja2.Template(template, trim_blocks=True)
