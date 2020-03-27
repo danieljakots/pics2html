@@ -71,11 +71,11 @@ def clean_aperture(FL):
 def analyze_picture(picture_path):
     exif = get_exif(picture_path)
     exposure_time = clean_exposure_time(exif["ExposureTime"])
-    aperture = clean_aperture(exif['FNumber'])
+    aperture = clean_aperture(exif["FNumber"])
     cleaned_exif = {}
-    cleaned_exif["model"] = exif['Model']
-    cleaned_exif["lens_model"] = exif['LensModel']
-    cleaned_exif["date"] = exif['DateTime']
+    cleaned_exif["model"] = exif["Model"]
+    cleaned_exif["lens_model"] = exif["LensModel"]
+    cleaned_exif["date"] = exif["DateTime"]
     cleaned_exif["focal_length"] = f"{exif['FocalLength'][0]}mm"
     cleaned_exif["aperture"] = aperture
     cleaned_exif["exposure_time"] = exposure_time
