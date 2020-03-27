@@ -15,7 +15,7 @@
 {% for pictures_dict in pictures %}
 {% for picture_name, picture_dict in pictures_dict.items() %}
         <h2>{{ picture_dict.title }}</h2>
-        <img src="pictures/{{ picture_name }}" alt="{{ picture_dict.title }}">
+        <img src="{{ picture_dict.small_path }}" alt="{{ picture_dict.title }}">
         <p>Taken on {{ picture_dict.date }} with {{ picture_dict.model }}</p>
 
 {% endfor %}

@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 
 import glob
+import os
 
+import PIL
 import PIL.Image
 import PIL.ExifTags
 
 import jinja2
+
+SMALL_IMAGE_WORD = "small"
+MAX_HORIZONTAL_SIZE = 800
 
 
 def get_exif(picture_path):
@@ -24,6 +29,21 @@ def get_exif(picture_path):
         "ISOSpeedRatings": exif["ISOSpeedRatings"],
         "FocalLength": exif["FocalLength"],
     }
+
+
+def reduce_image(picture_path, new_picture_path):
+    image = PIL.Image.open(picture_path)
+    if image.size[0] < MAX_HORIZONTAL_SIZE:
+        return
+    new_size = calculate_reduced_size(image.size)
+    image = image.resize(new_size, PIL.Image.ANTIALIAS)
+    image.save(new_picture_path, optimize=True, quality=85)
+
+
+def calculate_reduced_size(size):
+    horizontal_ratio = size[0] / MAX_HORIZONTAL_SIZE
+    new_size = (int(size[0] / horizontal_ratio), int(size[1] / horizontal_ratio))
+    return new_size
 
 
 def clean_exposure_time(ET):
@@ -61,16 +81,27 @@ def analyze_picture(picture_path):
     cleaned_exif["exposure_time"] = exposure_time
     cleaned_exif["iso"] = f"ISO {exif['ISOSpeedRatings']}"
     cleaned_exif["title"] = picture_path.rpartition("/")[2][11:].partition(".")[0]
+    cleaned_exif["path"] = picture_path
+    cleaned_exif["small_path"] = small_picture_path(picture_path)
     return cleaned_exif
+
+
+def small_picture_path(picture_path):
+    return f"{picture_path.rpartition('.')[0]}-{SMALL_IMAGE_WORD}.{picture_path.rpartition('.')[2]}"
 
 
 def main():
     pictures = []
     for picture_path in glob.glob("pictures/*"):
+        if SMALL_IMAGE_WORD in picture_path:
+            continue
         ce = analyze_picture(picture_path)
         picture_dict = {}
         picture_dict[picture_path.rpartition("/")[2]] = ce
         pictures.append(picture_dict)
+
+        if not os.path.isfile(small_picture_path(picture_path)):
+            reduce_image(picture_path, small_picture_path(picture_path))
 
     with open("index.html.j2", "r") as f:
         template = f.read()
