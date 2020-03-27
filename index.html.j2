@@ -12,13 +12,11 @@
         <h1>This is some pictures I took!</h1>
     </header>
 
-{% for pictures_dict in pictures %}
-{% for picture_name, picture_dict in pictures_dict.items() %}
-        <h2>{{ picture_dict.title }}</h2>
-        <img src="{{ picture_dict.small_path }}" alt="{{ picture_dict.title }}">
-        <p>Taken on {{ picture_dict.date }} with {{ picture_dict.model }}</p>
+{% for picture in pictures %}
+        <h2>{{ picture.title }}</h2>
+        <img src="{{ picture.small_path }}" alt="{{ picture.title }}">
+        <p>Taken on {{ picture.date }} with {{ picture.model }}</p>
 
-{% endfor %}
 {% endfor %}
 </body>
 </html>

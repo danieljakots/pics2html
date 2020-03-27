@@ -96,9 +96,7 @@ def main():
         if SMALL_IMAGE_WORD in picture_path:
             continue
         ce = analyze_picture(picture_path)
-        picture_dict = {}
-        picture_dict[picture_path.rpartition("/")[2]] = ce
-        pictures.append(picture_dict)
+        pictures.append(ce)
 
         if not os.path.isfile(small_picture_path(picture_path)):
             reduce_image(picture_path, small_picture_path(picture_path))
