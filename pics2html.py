@@ -109,7 +109,7 @@ def small_picture_path(picture_path):
     return f"{picture_path.rpartition('.')[0]}-{SMALL_IMAGE_WORD}.{picture_path.rpartition('.')[2]}"
 
 
-def create_html(pictures_per_page):
+def create_html_indexes(pictures_per_page):
     for rank, page in enumerate(pictures_per_page):
         with open("index.html.j2", "r") as f:
             template = f.read()
@@ -146,7 +146,7 @@ def main():
     pictures.sort(
         reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
     )
-    create_html(create_pagination(pictures))
+    create_html_indexes(create_pagination(pictures))
 
 
 if __name__ == "__main__":
