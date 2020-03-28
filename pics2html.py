@@ -18,7 +18,9 @@ MAX_HORIZONTAL_SIZE = 800
 PAGINATION = 10
 OUTPUT_DIR = "output"
 PICTURES_PATH = f"{OUTPUT_DIR}/pictures/*"
-SITEURL = "https://px.chown.me"
+SITE = {}
+SITE["url"] = "https://px.chown.me"
+SITE["name"] = "Daniel Jakots' photography"
 
 
 def get_exif(picture_path):
@@ -128,9 +130,7 @@ def create_html_indexes(pictures_per_page):
         if rank != len(pictures_per_page) - 1:
             pagination["next"] = rank + 1
 
-        result = jinja2_template.render(
-            pagination=pagination, pictures=page, siteurl=SITEURL
-        )
+        result = jinja2_template.render(pagination=pagination, pictures=page, site=SITE)
         if rank == 0:
             rank = ""
         else:
@@ -145,7 +145,7 @@ def create_html_picture(picture):
     )
     jinja2_template = jinja2_env.get_template("picture.html.j2")
 
-    result = jinja2_template.render(picture=picture, siteurl=SITEURL)
+    result = jinja2_template.render(picture=picture, site=SITE)
     with open(f"{OUTPUT_DIR}/{picture['html_path']}.html", "w") as f:
         f.write(result)
 
