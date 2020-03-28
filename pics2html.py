@@ -145,7 +145,7 @@ def create_html_picture(picture):
     )
     jinja2_template = jinja2_env.get_template("picture.html.j2")
 
-    result = jinja2_template.render(picture=picture)
+    result = jinja2_template.render(picture=picture, siteurl=SITEURL)
     with open(f"{OUTPUT_DIR}/{picture['html_path']}.html", "w") as f:
         f.write(result)
 
