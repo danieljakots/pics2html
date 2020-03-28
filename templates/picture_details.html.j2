@@ -1,5 +1,5 @@
 {% block content %}
-        <img src="{{ picture.small_path }}" alt="{{ picture.title }}">
+        <img src="{{ picture.small_path }}" alt="{{ picture.title }}" class="responsive">
         </a>
         <p>Taken on <b>{{ picture.date }}</b> with a <b>{{ picture.model }}</b> and a <b>{{ picture.lens_model }}</b> lens at <b>{{ picture.focal_length  }}</b>. The shutter was opened at <b>{{ picture.aperture }}</b> during <b>{{ picture.exposure_time }}</b>. Sensitivity was set at <b>{{ picture.iso }}</b></p>
         <a href="{{ siteurl }}/{{ picture.html_path }}.html">Permalink</a>
