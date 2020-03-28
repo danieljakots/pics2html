@@ -15,7 +15,7 @@ import jinja2
 
 SMALL_IMAGE_WORD = "small"
 MAX_HORIZONTAL_SIZE = 800
-PAGINATION = 6
+PAGINATION = 10
 OUTPUT_DIR = "output"
 PICTURES_PATH = f"{OUTPUT_DIR}/pictures/*"
 SITEURL = "https://px.chown.me"
