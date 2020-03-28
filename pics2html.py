@@ -112,10 +112,12 @@ def small_picture_path(picture_path):
 
 
 def create_html_indexes(pictures_per_page):
+    jinja2_env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader("templates"),
+        trim_blocks=True,
+    )
     for rank, page in enumerate(pictures_per_page):
-        with open("index.html.j2", "r") as f:
-            template = f.read()
-        jinja2_template = jinja2.Template(template, trim_blocks=True)
+        jinja2_template = jinja2_env.get_template("index.html.j2")
         pagination = {}
         pagination["current"] = rank + 1
         pagination["total"] = len(pictures_per_page)
