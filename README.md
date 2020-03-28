@@ -9,6 +9,7 @@ I need to write a blog post to explain it and then I'll link it here
 
 ## Usage
 
+Install dependencies: python3-pil python3-jinja2.
 Put all pictures in pictures/.
 Edit global var at the top of pics2html.py.
 Run `python3 pics2tohtml.py` and let the magic happen.
