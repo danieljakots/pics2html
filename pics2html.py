@@ -4,6 +4,7 @@
 #
 # Licensed under the MIT license. See the LICENSE file.
 
+import datetime
 import glob
 import os
 
@@ -11,6 +12,7 @@ import PIL
 import PIL.Image
 import PIL.ExifTags
 
+import rfeed
 import jinja2
 
 SMALL_IMAGE_WORD = "small"
@@ -20,7 +22,8 @@ OUTPUT_DIR = "output"
 PICTURES_PATH = f"{OUTPUT_DIR}/pictures/*"
 SITE = {}
 SITE["url"] = "https://px.chown.me"
-SITE["name"] = "Daniel Jakots' photography"
+SITE["author"] = "Daniel Jakots"
+SITE["name"] = f"{SITE['author']}' photography"
 
 
 def get_exif(picture_path):
@@ -159,14 +162,47 @@ def create_pagination(pictures):
     return pictures_per_page
 
 
+def create_feed(feed_items):
+    return rfeed.Feed(
+        title=SITE["name"],
+        link=SITE["url"],
+        description=f"RSS feed for {SITE['url']}",
+        language="en-US",
+        lastBuildDate=datetime.datetime.now(),
+        items=feed_items,
+    )
+
+
+def create_feed_item(title, link, date):
+    return rfeed.Item(
+        title=title,
+        link=link,
+        description=title,
+        author=SITE["author"],
+        guid=rfeed.Guid(link),
+        pubDate=date,
+    )
+
+
 def main():
     pictures = analyze_pictures(PICTURES_PATH)
     pictures.sort(
         reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
     )
     create_html_indexes(create_pagination(pictures))
+    feed_items = []
     for picture in pictures:
         create_html_picture(picture)
+        # 2014:12:27 15:43:55 -> ('2014', '12', '27', '15', '43', '55')
+        date = [int(i) for i in picture["date"].replace(" ", ":").split(":")]
+        date = datetime.datetime(*date)
+        feed_items.append(
+            create_feed_item(
+                picture["title"], f"{SITE['url']}/{picture['html_path']}.html", date
+            )
+        )
+    with open(f"{OUTPUT_DIR}/feed.xml", "w") as f:
+        f.write(create_feed(feed_items).rss())
 
 
 if __name__ == "__main__":
