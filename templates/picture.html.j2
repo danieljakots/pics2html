@@ -2,9 +2,5 @@
 {% block content %}
         <h2 id={{ picture.title }}><a href="{{ siteurl }}/{{ picture.path }}.html" class="hideme">{{ picture.title }}</a></h2>
         <a href="{{ picture.path }}">
-        <img src="{{ picture.small_path }}" alt="{{ picture.title }}">
-        </a>
-{% include "exif.html.j2" %}
-        <a href="{{ siteurl }}/{{ picture.html_path }}.html">Permalink</a>
-        <a href="{{ picture.path }}">Full quality</a>
+{% include "picture_details.html.j2" %}
 {% endblock %}

@@ -3,11 +3,7 @@
 {% for picture in pictures %}
         <h2 id={{ picture.title }}><a href="#{{ picture.title }}" class="hideme">{{ picture.title }}</a></h2>
         <a href="{{ picture.html_path }}.html">
-        <img src="{{ picture.small_path }}" alt="{{ picture.title }}">
-        </a>
-{% include "exif.html.j2" %}
-        <a href="{{ siteurl }}/{{ picture.html_path }}.html">Permalink</a>
-        <a href="{{ picture.path }}">Full quality</a>
+{% include "picture_details.html.j2" %}
 
 {% endfor %}
 
