@@ -12,6 +12,7 @@ import jinja2
 SMALL_IMAGE_WORD = "small"
 MAX_HORIZONTAL_SIZE = 800
 PAGINATION = 6
+PICTURES_PATH = "pictures/*"
 
 
 def get_exif(picture_path):
@@ -69,6 +70,19 @@ def clean_aperture(FL):
     return f"f/{FL}"
 
 
+def analyze_pictures(pictures_path):
+    pictures = []
+    for picture_path in glob.glob(pictures_path):
+        if SMALL_IMAGE_WORD in picture_path:
+            continue
+        ce = analyze_picture(picture_path)
+        pictures.append(ce)
+
+        if not os.path.isfile(small_picture_path(picture_path)):
+            reduce_image(picture_path, small_picture_path(picture_path))
+    return pictures
+
+
 def analyze_picture(picture_path):
     exif = get_exif(picture_path)
     exposure_time = clean_exposure_time(exif["ExposureTime"])
@@ -91,26 +105,7 @@ def small_picture_path(picture_path):
     return f"{picture_path.rpartition('.')[0]}-{SMALL_IMAGE_WORD}.{picture_path.rpartition('.')[2]}"
 
 
-def main():
-    pictures = []
-    for picture_path in glob.glob("pictures/*"):
-        if SMALL_IMAGE_WORD in picture_path:
-            continue
-        ce = analyze_picture(picture_path)
-        pictures.append(ce)
-
-        if not os.path.isfile(small_picture_path(picture_path)):
-            reduce_image(picture_path, small_picture_path(picture_path))
-
-    pictures.sort(
-        reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
-    )
-    pictures_per_page = []
-    offset = 0
-    for _ in range((len(pictures) // PAGINATION) + 1):
-        pictures_per_page.append(pictures[offset:offset + PAGINATION])
-        offset = offset + PAGINATION
-
+def create_html(pictures_per_page):
     for rank, page in enumerate(pictures_per_page):
         with open("index.html.j2", "r") as f:
             template = f.read()
@@ -131,6 +126,23 @@ def main():
             rank = str(rank)
         with open(f"index{rank}.html", "w") as f:
             f.write(result)
+
+
+def create_pagination(pictures):
+    pictures_per_page = []
+    offset = 0
+    for _ in range((len(pictures) // PAGINATION) + 1):
+        pictures_per_page.append(pictures[offset : offset + PAGINATION])
+        offset = offset + PAGINATION
+    return pictures_per_page
+
+
+def main():
+    pictures = analyze_pictures(PICTURES_PATH)
+    pictures.sort(
+        reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
+    )
+    create_html(create_pagination(pictures))
 
 
 if __name__ == "__main__":
