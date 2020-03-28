@@ -16,7 +16,8 @@ import jinja2
 SMALL_IMAGE_WORD = "small"
 MAX_HORIZONTAL_SIZE = 800
 PAGINATION = 6
-PICTURES_PATH = "pictures/*"
+OUTPUT_DIR = "output"
+PICTURES_PATH = f"{OUTPUT_DIR}/pictures/*"
 
 
 def get_exif(picture_path):
@@ -89,6 +90,7 @@ def analyze_pictures(pictures_path):
 
 def analyze_picture(picture_path):
     exif = get_exif(picture_path)
+    picture_path = picture_path[len(OUTPUT_DIR) + 1:]
     exposure_time = clean_exposure_time(exif["ExposureTime"])
     aperture = clean_aperture(exif["FNumber"])
     cleaned_exif = {}
@@ -128,7 +130,7 @@ def create_html_indexes(pictures_per_page):
             rank = ""
         else:
             rank = str(rank)
-        with open(f"index{rank}.html", "w") as f:
+        with open(f"{OUTPUT_DIR}/index{rank}.html", "w") as f:
             f.write(result)
 
 
