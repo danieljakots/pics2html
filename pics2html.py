@@ -11,6 +11,7 @@ import jinja2
 
 SMALL_IMAGE_WORD = "small"
 MAX_HORIZONTAL_SIZE = 800
+PAGINATION = 6
 
 
 def get_exif(picture_path):
@@ -104,13 +105,32 @@ def main():
     pictures.sort(
         reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
     )
+    pictures_per_page = []
+    offset = 0
+    for _ in range((len(pictures) // PAGINATION) + 1):
+        pictures_per_page.append(pictures[offset:offset + PAGINATION])
+        offset = offset + PAGINATION
 
-    with open("index.html.j2", "r") as f:
-        template = f.read()
-    jinja2_template = jinja2.Template(template, trim_blocks=True)
-    result = jinja2_template.render(pictures=pictures)
-    with open("index.html", "w") as f:
-        f.write(result)
+    for rank, page in enumerate(pictures_per_page):
+        with open("index.html.j2", "r") as f:
+            template = f.read()
+        jinja2_template = jinja2.Template(template, trim_blocks=True)
+        pagination = {}
+        pagination["current"] = rank + 1
+        pagination["total"] = len(pictures_per_page)
+        if rank > 0:
+            pagination["previous"] = rank - 1
+        # check if we're on the last page (i.e. last loop)
+        if rank != len(pictures_per_page) - 1:
+            pagination["next"] = rank + 1
+
+        result = jinja2_template.render(pagination=pagination, pictures=page)
+        if rank == 0:
+            rank = ""
+        else:
+            rank = str(rank)
+        with open(f"index{rank}.html", "w") as f:
+            f.write(result)
 
 
 if __name__ == "__main__":
