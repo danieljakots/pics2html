@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>body{margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;font-family:sans-serif;color:#333;padding:0 10px}h1,h2,h3{line-height:1.2}.hideme{color: #333;text-decoration:none;}h1{color:#CD0006}p.thicker{font-weight:800;}.responsive{max-width:100%;height:auto;}a:link{color:#CD0006;text-decoration:none;}</style>
+    <style>body{margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;font-family:sans-serif;color:#333;padding:0 10px}h1,h2,h3{line-height:1.2}.hideme{color: #333;text-decoration:none;}h1{color:#CD0006}.responsive{max-width:100%;height:auto;}a:link{color:#CD0006;text-decoration:none;}footer{font-size:12px;color:#555;}.img-lower{position:relative;top:4px;}</style>
 
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="{{ site.url}}/feed.xml" />
     <title>{{ site.name }}</title>
@@ -14,13 +14,14 @@
       <a href="{{ site.url}}" class=hideme>
         <h1>This is some pictures I took!</h1>
       </a>
-        <p class="ticker">Hey, I'm <a href="https://chown.me/about.html">Daniel</a>.
-        This website was generated with <a href="https://github.com/danieljakots/pics2html">a python script of mine</a>.
-        All these pictures have been taken by myself and are under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
-        You can subscribe to the <a href="{{ site.url}}/feed.xml">RSS Feed</a>!</p>
+      <p><img class="img-lower" src="./user.svg" alt="Author"/> <a href="https://chown.me/about.html">Daniel Jakots</a>
+      <img class="img-lower" src="./copyright.svg" alt="Copyright"/> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+      <img class="img-lower" src="./code.svg" alt="Code"/> <a href="https://github.com/danieljakots/pics2html">pics2html.py</a>
+      <img class="img-lower" src="./rss.svg" alt="RSS"/> <a href="{{ site.url}}/feed.xml">RSS Feed</a></p>
     </header>
 
 {% block content %}
 {% endblock %}
+    <footer>Icons are from <a href="https://github.com/tabler/tabler-icons">Paweł Kuna</a></footer>
 </body>
 </html>
