@@ -1,0 +1,8 @@
+{% extends "daddy.html.j2" %}
+{% block content %}
+{% for picture in pictures %}
+        <h2 id={{ picture.title }}><a href="#{{ picture.title }}" class="hideme">{{ picture.title }}</a></h2>
+        <a href="{{ picture.html_path }}.html">
+{% include "picture_details.html.j2" %}
+{% endfor %}
+{% endblock %}

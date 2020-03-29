@@ -153,6 +153,16 @@ def create_html_picture(picture):
         f.write(result)
 
 
+def create_html_all(pictures):
+    jinja2_env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader("templates"), trim_blocks=True
+    )
+    jinja2_template = jinja2_env.get_template("all.html.j2")
+    result = jinja2_template.render(pictures=pictures, site=SITE)
+    with open(f"{OUTPUT_DIR}/all.html", "w") as f:
+        f.write(result)
+
+
 def create_pagination(pictures):
     """Split the list of pictures into a list of lists of PAGINATION pictures."""
     pictures_for_page = []
@@ -191,6 +201,7 @@ def main():
         reverse=True, key=lambda i: i["date"].replace(":", "").replace(" ", "")
     )
     create_html_indexes(create_pagination(pictures))
+    create_html_all(pictures)
     feed_items = []
     for picture in pictures:
         create_html_picture(picture)
