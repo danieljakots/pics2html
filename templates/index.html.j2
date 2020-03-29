@@ -15,9 +15,9 @@
 <a href="index{{ pagination.previous }}.html">previous page</a>
 {% endif %}
 {% endif %}
+(you're currently page {{ pagination.current }} out of {{ pagination.total }} pages).
 {% if pagination.next %}
 <a href="index{{ pagination.next }}.html">next page</a>
 {% endif %}
-(you're currently page {{ pagination.current }} out of {{ pagination.total }} pages).
 </p>
 {% endblock %}
