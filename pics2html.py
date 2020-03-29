@@ -154,6 +154,7 @@ def create_html_picture(picture):
 
 
 def create_pagination(pictures):
+    """Split the list of pictures into a list of lists of PAGINATION pictures."""
     pictures_for_page = []
     offset = 0
     for _ in range((len(pictures) // PAGINATION) + 1):
