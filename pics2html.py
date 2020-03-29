@@ -118,19 +118,19 @@ def small_picture_path(picture_path):
     return f"{picture_path.rpartition('.')[0]}-{SMALL_IMAGE_WORD}.{picture_path.rpartition('.')[2]}"
 
 
-def create_html_indexes(pictures_per_page):
+def create_html_indexes(pictures):
     jinja2_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader("templates"), trim_blocks=True
     )
-    for rank, page in enumerate(pictures_per_page):
+    for rank, page in enumerate(pictures):
         jinja2_template = jinja2_env.get_template("index.html.j2")
         pagination = {}
         pagination["current"] = rank + 1
-        pagination["total"] = len(pictures_per_page)
+        pagination["total"] = len(pictures)
         if rank > 0:
             pagination["previous"] = rank - 1
         # check if we're on the last page (i.e. last loop)
-        if rank != len(pictures_per_page) - 1:
+        if rank != len(pictures) - 1:
             pagination["next"] = rank + 1
 
         result = jinja2_template.render(pagination=pagination, pictures=page, site=SITE)
@@ -154,12 +154,12 @@ def create_html_picture(picture):
 
 
 def create_pagination(pictures):
-    pictures_per_page = []
+    pictures_for_page = []
     offset = 0
     for _ in range((len(pictures) // PAGINATION) + 1):
-        pictures_per_page.append(pictures[offset : offset + PAGINATION])
+        pictures_for_page.append(pictures[offset : offset + PAGINATION])
         offset = offset + PAGINATION
-    return pictures_per_page
+    return pictures_for_page
 
 
 def create_feed(feed_items):
