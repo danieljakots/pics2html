@@ -1,6 +1,8 @@
 {% block content %}
         <img src="{{ picture.small_path }}" alt="{{ picture.title }}" class="responsive">
         </a>
-        <p>Taken on <b>{{ picture.date }}</b> with a <b>{{ picture.model }}</b> and a <b>{{ picture.lens_model }}</b> lens at <b>{{ picture.focal_length  }}</b>. The shutter was opened at <b>{{ picture.aperture }}</b> during <b>{{ picture.exposure_time }}</b>. Sensitivity was set at <b>{{ picture.iso }}</b></p>
+        <p><img class="img-lower" src="./camera.svg" alt="Camera"/> {{ picture.model }} &nbsp; &nbsp; <img class="img-lower" src="./lego.svg" alt="Lens"/> {{ picture.lens_model }}</p>
+        <p><img class="img-lower" src="./chart-candle.svg" alt="Focal length"/> {{ picture.focal_length }} &nbsp; &nbsp; <img class="img-lower" src="./aperture.svg" alt="Aperture"/> {{ picture.aperture }} &nbsp; &nbsp; <img class="img-lower" src="./gauge.svg" alt="Exposure time"/> {{ picture.exposure_time }} &nbsp; &nbsp; <img class="img-lower" src="./info-square.svg" alt="ISO"/> {{ picture.iso }}</p>
+        <p><img class="img-lower" src="./clock.svg" alt="Date"/> {{ picture.date }}</p>
         <p><a href="{{ site.url }}/{{ picture.html_path }}.html">Permalink</a> — <a href="{{ picture.path }}">Full quality</a></p>
 {% endblock %}
