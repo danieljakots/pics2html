@@ -122,7 +122,7 @@ def create_html_indexes(pictures):
     jinja2_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader("templates"), trim_blocks=True
     )
-    for rank, page in enumerate(pictures):
+    for rank, pictures_in_page in enumerate(pictures):
         jinja2_template = jinja2_env.get_template("index.html.j2")
         pagination = {}
         pagination["current"] = rank + 1
@@ -133,7 +133,9 @@ def create_html_indexes(pictures):
         if rank != len(pictures) - 1:
             pagination["next"] = rank + 1
 
-        result = jinja2_template.render(pagination=pagination, pictures=page, site=SITE)
+        result = jinja2_template.render(
+            pagination=pagination, pictures=pictures_in_page, site=SITE
+        )
         if rank == 0:
             rank = ""
         else:
