@@ -102,7 +102,7 @@ def analyze_picture(picture_path):
     cleaned_exif = {}
     cleaned_exif["model"] = exif["Model"]
     cleaned_exif["lens_model"] = exif["LensModel"]
-    cleaned_exif["date"] = exif["DateTime"]
+    cleaned_exif["date"] = f"{exif['DateTime']} (UTC)"
     cleaned_exif["focal_length"] = f"{exif['FocalLength'][0]}mm"
     cleaned_exif["aperture"] = aperture
     cleaned_exif["exposure_time"] = exposure_time
@@ -194,7 +194,7 @@ def main():
     for picture in pictures:
         create_html_picture(picture)
         # 2014:12:27 15:43:55 -> ('2014', '12', '27', '15', '43', '55')
-        date = [int(i) for i in picture["date"].replace(" ", ":").split(":")]
+        date = [int(i) for i in picture["date"][:-6].replace(" ", ":").split(":")]
         date = datetime.datetime(*date)
         feed_items.append(
             create_feed_item(
