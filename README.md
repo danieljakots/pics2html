@@ -5,7 +5,7 @@ don't care about exif, this most certainly pointless for you.
 
 ## Why this?
 
-I need to write a blog post to explain it and then I'll link it here
+More details [here](https://chown.me/blog/pics2html.html).
 
 ## Usage
 
