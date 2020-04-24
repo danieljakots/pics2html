@@ -12,7 +12,7 @@ import PIL
 import PIL.Image
 import PIL.ExifTags
 
-import rfeed
+import feedgenerator
 import jinja2
 
 SMALL_IMAGE_WORD = "small"
@@ -175,25 +175,12 @@ def create_pagination(pictures):
     return pictures_for_page
 
 
-def create_feed(feed_items):
-    return rfeed.Feed(
+def create_feed():
+    return feedgenerator.Atom1Feed(
         title=SITE["name"],
-        link=SITE["url"],
-        description=f"RSS feed for {SITE['url']}",
-        language="en-US",
-        lastBuildDate=datetime.datetime.now(),
-        items=feed_items,
-    )
-
-
-def create_feed_item(title, link, date):
-    return rfeed.Item(
-        title=title,
-        link=link,
-        description=title,
-        author=SITE["author"],
-        guid=rfeed.Guid(link),
-        pubDate=date,
+        link=f'{SITE["url"]}/',
+        feed_url=f'{SITE["url"]}/feed.xml',
+        description=f"Feed for {SITE['url']}",
     )
 
 
@@ -204,19 +191,21 @@ def main():
     )
     create_html_indexes(create_pagination(pictures))
     create_html_all(pictures)
-    feed_items = []
+    feed = create_feed()
     for picture in pictures:
         create_html_picture(picture)
         # 2014:12:27 15:43:55 -> ('2014', '12', '27', '15', '43', '55')
         date = [int(i) for i in picture["date"][:-6].replace(" ", ":").split(":")]
         date = datetime.datetime(*date)
-        feed_items.append(
-            create_feed_item(
-                picture["title"], f"{SITE['url']}/{picture['html_path']}.html", date
-            )
+        feed.add_item(
+            title=picture["title"],
+            link=f"{SITE['url']}/{picture['html_path']}.html",
+            author_name=SITE["author"],
+            pubdate=date,
+            description=picture["title"],
         )
     with open(f"{OUTPUT_DIR}/feed.xml", "w") as f:
-        f.write(create_feed(feed_items).rss())
+        feed.write(f, "utf-8")
 
 
 if __name__ == "__main__":
