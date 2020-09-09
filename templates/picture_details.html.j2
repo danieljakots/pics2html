@@ -1,5 +1,5 @@
 {% block content %}
-        <img src="{{ picture.small_path }}" alt="{{ picture.title }}" class="responsive">
+        <img src="{{ picture.small_path }}" alt="{{ picture.title }}" class="responsive" loading="lazy">
         </a>
         <p><img class="img-lower" src="./camera.svg" alt="Camera"/> {{ picture.model }} &nbsp; &nbsp; <img class="img-lower" src="./lego.svg" alt="Lens"/> {{ picture.lens_model }}</p>
         <p><img class="img-lower" src="./chart-candle.svg" alt="Focal length"/> {{ picture.focal_length }} &nbsp; &nbsp; <img class="img-lower" src="./aperture.svg" alt="Aperture"/> {{ picture.aperture }} &nbsp; &nbsp; <img class="img-lower" src="./gauge.svg" alt="Exposure time"/> {{ picture.exposure_time }} &nbsp; &nbsp; <img class="img-lower" src="./info-square.svg" alt="ISO"/> {{ picture.iso }}</p>
