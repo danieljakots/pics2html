@@ -1,4 +1,2 @@
 *.swp
 output/pictures
-output/*.html
-output/feed.xml
