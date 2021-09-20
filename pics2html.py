@@ -60,25 +60,25 @@ def calculate_reduced_size(size):
 
 
 def clean_exposure_time(ET):
-    # (1, 1) -> 1s
-    if ET[0] == 1 and ET[1] == 1:
-        return "1s"
-    # (1, 60) -> 1/60s
-    elif ET[0] == 1 and ET[1] != 1:
-        return f"{ET[0]}/{ET[1]}s"
-    # (25, 10) -> 2.5s
-    elif ET[0] != 1 and ET[1] != 1:
-        return f"{float(ET[0] / ET[1])}s"
-    # (8, 1) -> 8s
-    elif ET[0] != 1 and ET[1] == 1:
-        return f"{ET[0]}s"
+    if ET >= 0.3:
+        if str(ET)[-2:] == ".0":
+            ET = int(ET)
+        return f"{ET}s"
+    ET = f"1/{1 / ET}s"
+    return ET
 
 
-def clean_aperture(FL):
-    FL = FL[0] / FL[1]
-    # strip .0 if needed
-    FL = "{:g}".format(FL)
-    return f"f/{FL}"
+def clean_aperture(FN):
+    if str(FN)[-2:] == ".0":
+        FN = int(FN)
+    return f"f/{FN}"
+
+
+def clean_focal_length(FL):
+    if str(FL)[-2:] == ".0":
+        FL = int(FL)
+    # FL = "{:g}".format((FL))
+    return f"{FL}mm"
 
 
 def analyze_pictures(pictures_path):
@@ -99,11 +99,12 @@ def analyze_picture(picture_path):
     picture_path = picture_path[len(OUTPUT_DIR) + 1 :]
     exposure_time = clean_exposure_time(exif["ExposureTime"])
     aperture = clean_aperture(exif["FNumber"])
+    focal_length = clean_focal_length(exif['FocalLength'])
     cleaned_exif = {}
     cleaned_exif["model"] = exif["Model"]
     cleaned_exif["lens_model"] = exif["LensModel"]
     cleaned_exif["date"] = f"{exif['DateTime']} (UTC)"
-    cleaned_exif["focal_length"] = f"{exif['FocalLength'][0]}mm"
+    cleaned_exif["focal_length"] = focal_length
     cleaned_exif["aperture"] = aperture
     cleaned_exif["exposure_time"] = exposure_time
     cleaned_exif["iso"] = f"ISO {exif['ISOSpeedRatings']}"
